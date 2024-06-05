@@ -1,206 +1,232 @@
-# SAML Jackson: Open Source Enterprise SSO And Directory Sync
-
-<a href="https://bestpractices.coreinfrastructure.org/projects/7493"><img src="https://bestpractices.coreinfrastructure.org/projects/7493/badge" alt="OpenSSF Best Practices Badge"></a>
-<a href="https://www.npmjs.com/package/@boxyhq/saml-jackson"><img src="https://img.shields.io/npm/dt/@boxyhq/saml-jackson" alt="NPM downloads badge" ></a>
-<a href="https://hub.docker.com/r/boxyhq/jackson"><img src="https://img.shields.io/docker/pulls/boxyhq/jackson" alt="Docker pull statistics badge"></a>
-<a href="https://github.com/boxyhq/jackson/blob/main/LICENSE"><img src="https://img.shields.io/github/license/boxyhq/jackson" alt="Apache 2.0 license badge"></a>
-<a href="https://github.com/boxyhq/jackson/issues"><img src="https://img.shields.io/github/issues/boxyhq/jackson" alt="Open Github issues badge"></a>
-<a href="https://github.com/boxyhq/jackson/stargazers"><img src="https://img.shields.io/github/stars/boxyhq/jackson" alt="Github stargazers"></a>
-<a href="https://www.npmjs.com/package/@boxyhq/saml-jackson"><img src="https://img.shields.io/node/v/@boxyhq/saml-jackson" alt="Nodejs version support badge"></a>
-<a href="https://raw.githubusercontent.com/boxyhq/jackson/main/swagger/swagger.json"><img src="https://img.shields.io/swagger/valid/3.0?specUrl=https%3A%2F%2Fraw.githubusercontent.com%2Fboxyhq%2Fjackson%2Fmain%2Fswagger%2Fswagger.json" alt="Swagger Validator badge"></a>
-
-SAML Jackson bridges or proxies a SAML login flow to OAuth 2.0 or OpenID Connect, abstracting away all the complexities of the SAML protocol. It also supports Directory Sync via the SCIM 2.0 protocol for automatic user and group provisioning/de-provisioning.
-
-> We now also support OpenID Connect providers.
-
-![A quick demo of the admin portal without sound to show an overview of what to expect. It shows features such as SSO, the ability to set up SSO connections, Setup Links, Directory sync, and more](samljackson480.gif)
-
-## Directory Sync
-
-SAML Jackson also supports Directory Sync based on the SCIM 2.0 protocol.
-
-Directory sync helps organizations automate the provisioning and de-provisioning of their users. As a result, it streamlines the user lifecycle management process by saving valuable organizational hours, creating a single truth source of the user identity data, and facilitating them to keep the data secure.
-
-For complete documentation, visit [boxyhq.com/docs/directory-sync/overview](https://boxyhq.com/docs/directory-sync/overview)
-
-## 🌟 Why star this repository?
-
-If you find this project helpful, please consider supporting us by starring [the repository](https://github.com/boxyhq/jackson) and sharing it with others. This helps others find the project, grow the community and ensure the long-term health of the project. 🙏
-
-- [SAML Jackson: Open Source Enterprise SSO And Directory Sync](#saml-jackson-open-source-enterprise-sso-and-directory-sync)
-  - [Directory Sync](#directory-sync)
-  - [🌟 Why star this repository?](#-why-star-this-repository)
-  - [🚀 Getting Started with SAML Jackson](#-getting-started-with-saml-jackson)
-    - [Try A Demo](#try-a-demo)
-    - [Deploying SAML Jackson as a separate service locally](#deploying-saml-jackson-as-a-separate-service-locally)
-      - [Prerequisites](#prerequisites)
-      - [Clone the repository](#clone-the-repository)
-      - [Install dependencies](#install-dependencies)
-      - [Setup environment variables](#setup-environment-variables)
-      - [Database](#database)
-      - [Start the development server](#start-the-development-server)
-    - [Documentation](#documentation)
-    - [Easy Cloud Deployment](#easy-cloud-deployment)
-  - [Videos](#videos)
-  - [End-to-End (E2E) tests](#end-to-end-e2e-tests)
-  - [About BoxyHQ](#about-boxyhq)
-  - [Security And Observability](#security-and-observability)
-    - [Observability](#observability)
-    - [SBOM Reports (Software Bill Of Materials)](#sbom-reports-software-bill-of-materials)
-    - [Container Signing and Verification](#container-signing-and-verification)
-    - [🛡️ Reporting Security Issues](#️-reporting-security-issues)
-  - [Contributing](#contributing)
-  - [💫 Support](#-support)
-  - [📌 License](#-license)
-
-## 🚀 Getting Started with SAML Jackson
-
-There are two ways to integrate SAML Jackson into an application. Depending on your use case, you can choose either of them. <br>
-
-1. [As a separate service](https://boxyhq.com/docs/jackson/deploy/service) ([Next.js](https://nextjs.org/) application) This includes an admin portal out of the box for managing SSO and Directory Sync connections.
-2. [NPM library](https://boxyhq.com/docs/jackson/deploy/npm-library) as an embedded library in your application.
-
-### Try A Demo
-
-- Try our hosted demo showcasing the SAML service provider (SP) initiated [login flow here](https://saml-demo.boxyhq.com), which uses our [Mock SAML](https://mocksaml.com) IdP service.
-- Try an Identity Provider (IdP) initiated [login flow here](https://mocksaml.com/saml/login).
-
-### Deploying SAML Jackson as a separate service locally
-
-Let's get you to Hello SAML Jackson in no time.
-
-#### Prerequisites
-
-- [Node.js](https://nodejs.org/en) at version `18.14.2` or higher
-
-> It is generally a good idea to install and maintain Node.js versions using a version manager like [nvm](https://github.com/nvm-sh/nvm) or [nvs](https://github.com/jasongin/nvs) on Windows. More [information is available here](https://schalkneethling.com/posts/installing-node-and-managing-versions).
-
-#### Clone the repository
-
-```bash
-git clone https://github.com/boxyhq/jackson.git
-cd jackson
-```
-
-#### Install dependencies
-
-```bash
-npm i
-```
-
-#### Setup environment variables
-
-Create a `.env` from the existing `.env.example` file in the root of the project.
-
-```bash
-cp .env.example .env
-```
-
-> **Environment variable documentation:** Have a look at https://boxyhq.com/docs/jackson/deploy/env-variables for all of the available environment variables.
-
-#### Database
-
-For the rest of the setup, we will use a PostgreSQL database. The easiest way to get PostgreSQL up and running on macOS is by using Postgres.app. You can download it from [https://postgresapp.com/](https://postgresapp.com/).
-
-> For other operating systems and alternative options for MacOS, please see the [documentation available on the Prisma website](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database).
-
-#### Start the development server
-
-Now that we have our database running we can start the development server. But before we do, we need a way to log into the admin portal.
-
-To log in to the admin portal we either need to [configure magic links](https://boxyhq.com/docs/admin-portal/overview#1-magic-links), or [enable username and password](https://boxyhq.com/docs/admin-portal/overview#2-email-and-password) login. The easiest one, and the one we will use, is to enable username and password login.
-
-In your `.env` find the `NEXTAUTH_ADMIN_CREDENTIALS` environment variable. We need to provide an `email:password` combination that we can then use to log in to the admin portal. For example:
-
-```bash
-NEXTAUTH_ADMIN_CREDENTIALS=admin@example.com:password
-```
-
-Now we can start the development server:
-
-```bash
-npm run dev
-```
-
-Open `http://localhost:5225` in your browser and you should be redirected to the login screen.
-
-At the login screen, you can now use the username and password you set in the `NEXTAUTH_ADMIN_CREDENTIALS` environment variable to log in. Click "Sign In" and you should be logged in and see the SSO Connections page with no configured connections. We have reached Hello SAML Jackson!
-
-### Documentation
-
-For the full documentation, visit [boxyhq.com/docs/jackson/overview](https://boxyhq.com/docs/jackson/overview)
-
-### Easy Cloud Deployment
-
-Deploy SAML Jackson to the cloud with a single click using the following providers:
-
-[![Deploy with Vercel](https://vercel.com/button)](<https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fboxyhq%2Fjackson&env=DB_ENGINE,DB_TYPE,DB_URL,DB_ENCRYPTION_KEY,DB_TTL,DB_CLEANUP_LIMIT,JACKSON_API_KEYS,EXTERNAL_URL,IDP_ENABLED,SAML_AUDIENCE,CLIENT_SECRET_VERIFIER,SMTP_HOST,SMTP_PORT,SMTP_USER,SMTP_PASSWORD,SMTP_FROM,NEXTAUTH_URL,NEXTAUTH_SECRET,NEXTAUTH_ACL&envDescription=DB%20configuration%20and%20keys%20for%20encryption%20and%20authentication.EXTERNAL_URL%20(Usually%20https%3A%2F%2F%3Cproject-name-from-above%3E.vercel.app)%20can%20be%20set%20after%20deployment%20from%20the%20project%20dashboard.Set%20to%20''%20if%20not%20applicable.&envLink=https://boxyhq.com/docs/jackson/deploy/env-variables>)
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-## Videos
-
-- SSO/OIDC Tutorial [SAML Jackson Enterprise SSO](https://www.youtube.com/watch?v=nvsD4-GQw4A) (split into chapters to easily find what you are looking for)
-- SAML single sign-on login [demo](https://www.youtube.com/watch?v=VBUznQwoEWU)
-
-## End-to-End (E2E) tests
-
-Create a `.env.test.local` file and populate the values. To execute the tests run:
-
-```zsh
-npm run test:e2e
-```
-
-## About BoxyHQ
-
-<a href="https://boxyhq.com/enterprise-sso">
-<picture>
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><div class="markdown-heading" dir="auto"><h1 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SAML Jackson：开源企业 SSO 和目录同步</font></font></h1><a id="user-content-saml-jackson-open-source-enterprise-sso-and-directory-sync" class="anchor" aria-label="永久链接：SAML Jackson：开源企业 SSO 和目录同步" href="#saml-jackson-open-source-enterprise-sso-and-directory-sync"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a href="https://bestpractices.coreinfrastructure.org/projects/7493" rel="nofollow"><img src="https://camo.githubusercontent.com/9639c120eed9d593b7823ec6eaa67f2ff6b2c11b13cb9253b3130d76c27e43a0/68747470733a2f2f626573747072616374696365732e636f7265696e6672617374727563747572652e6f72672f70726f6a656374732f373439332f6261646765" alt="OpenSSF 最佳实践徽章" data-canonical-src="https://bestpractices.coreinfrastructure.org/projects/7493/badge" style="max-width: 100%;"></a>
+<a href="https://www.npmjs.com/package/@boxyhq/saml-jackson" rel="nofollow"><img src="https://camo.githubusercontent.com/be5df5c874b7ac26f1191ea76990f357e57621bc75ceeab32c9aab6617aaac90/68747470733a2f2f696d672e736869656c64732e696f2f6e706d2f64742f40626f787968712f73616d6c2d6a61636b736f6e" alt="NPM 下载徽章" data-canonical-src="https://img.shields.io/npm/dt/@boxyhq/saml-jackson" style="max-width: 100%;"></a>
+<a href="https://hub.docker.com/r/boxyhq/jackson" rel="nofollow"><img src="https://camo.githubusercontent.com/138156ede2d0c1d6dcb6d0891cce763188d095dfd4fcc248df16d6c9d02a47d5/68747470733a2f2f696d672e736869656c64732e696f2f646f636b65722f70756c6c732f626f787968712f6a61636b736f6e" alt="Docker 拉取统计徽章" data-canonical-src="https://img.shields.io/docker/pulls/boxyhq/jackson" style="max-width: 100%;"></a>
+<a href="https://github.com/boxyhq/jackson/blob/main/LICENSE"><img src="https://camo.githubusercontent.com/5823f8e2fdef975709f54385fe93be6ac64d792d1ff4becda0489acf085dcd42/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f626f787968712f6a61636b736f6e" alt="Apache 2.0 许可证徽章" data-canonical-src="https://img.shields.io/github/license/boxyhq/jackson" style="max-width: 100%;"></a>
+<a href="https://github.com/boxyhq/jackson/issues"><img src="https://camo.githubusercontent.com/44a58bed7c745d445b8f1d8c3fd6ba0a40c91e58fd20aa8e2be8e902d7bf8ba8/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6973737565732f626f787968712f6a61636b736f6e" alt="打开 Github 问题徽章" data-canonical-src="https://img.shields.io/github/issues/boxyhq/jackson" style="max-width: 100%;"></a>
+<a href="https://github.com/boxyhq/jackson/stargazers"><img src="https://camo.githubusercontent.com/e154e77e75f7025875b154ee07764eecc2dc0be39e33e3dba346896cc8ff8411/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f73746172732f626f787968712f6a61636b736f6e" alt="Github 观星者" data-canonical-src="https://img.shields.io/github/stars/boxyhq/jackson" style="max-width: 100%;"></a>
+<a href="https://www.npmjs.com/package/@boxyhq/saml-jackson" rel="nofollow"><img src="https://camo.githubusercontent.com/25b6509facb450af0eae4502b320e7189d0d8d8d07f76ac7ce0406126e48ec91/68747470733a2f2f696d672e736869656c64732e696f2f6e6f64652f762f40626f787968712f73616d6c2d6a61636b736f6e" alt="Nodejs 版本支持徽章" data-canonical-src="https://img.shields.io/node/v/@boxyhq/saml-jackson" style="max-width: 100%;"></a>
+<a href="https://raw.githubusercontent.com/boxyhq/jackson/main/swagger/swagger.json" rel="nofollow"><img src="https://camo.githubusercontent.com/00ce814ea0edd4ac009977bd3a4d6120907b29b4b689399544bde09412926c38/68747470733a2f2f696d672e736869656c64732e696f2f737761676765722f76616c69642f332e303f7370656355726c3d68747470732533412532462532467261772e67697468756275736572636f6e74656e742e636f6d253246626f787968712532466a61636b736f6e2532466d61696e25324673776167676572253246737761676765722e6a736f6e" alt="Swagger 验证器徽章" data-canonical-src="https://img.shields.io/swagger/valid/3.0?specUrl=https%3A%2F%2Fraw.githubusercontent.com%2Fboxyhq%2Fjackson%2Fmain%2Fswagger%2Fswagger.json" style="max-width: 100%;"></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SAML Jackson 将 SAML 登录流程桥接或代理到 OAuth 2.0 或 OpenID Connect，从而消除 SAML 协议的所有复杂性。它还支持通过 SCIM 2.0 协议进行目录同步，以实现自动用户和组配置/取消配置。</font></font></p>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们现在还支持 OpenID Connect 提供商。</font></font></p>
+</blockquote>
+<p dir="auto"><animated-image data-catalyst=""><a target="_blank" rel="noopener noreferrer" href="/boxyhq/jackson/blob/main/samljackson480.gif" data-target="animated-image.originalLink"><img src="/boxyhq/jackson/raw/main/samljackson480.gif" alt="管理门户的快速演示（无声），概述预期内容。它展示了 SSO、设置 SSO 连接的能力、设置链接、目录同步等功能" style="max-width: 100%; display: inline-block;" data-target="animated-image.originalImage"></a>
+      <span class="AnimatedImagePlayer" data-target="animated-image.player" hidden="">
+        <a data-target="animated-image.replacedLink" class="AnimatedImagePlayer-images" href="https://github.com/boxyhq/jackson/blob/main/samljackson480.gif" target="_blank">
+          
+        <span data-target="animated-image.imageContainer">
+            <img data-target="animated-image.replacedImage" alt="管理门户的快速演示（无声），概述预期内容。它展示了 SSO、设置 SSO 连接的能力、设置链接、目录同步等功能" class="AnimatedImagePlayer-animatedImage" src="https://github.com/boxyhq/jackson/raw/main/samljackson480.gif" style="display: block; opacity: 1;">
+          <canvas class="AnimatedImagePlayer-stillImage" aria-hidden="true" width="678" height="480"></canvas></span></a>
+        <button data-target="animated-image.imageButton" class="AnimatedImagePlayer-images" tabindex="-1" aria-label="播放管理门户的快速演示（无声），以概述预期内容。它展示了 SSO、设置 SSO 连接的能力、设置链接、目录同步等功能" hidden=""></button>
+        <span class="AnimatedImagePlayer-controls" data-target="animated-image.controls" hidden="">
+          <button data-target="animated-image.playButton" class="AnimatedImagePlayer-button" aria-label="播放管理门户的快速演示（无声），以概述预期内容。它展示了 SSO、设置 SSO 连接的能力、设置链接、目录同步等功能">
+            <svg aria-hidden="true" focusable="false" class="octicon icon-play" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 13.5427V2.45734C4 1.82607 4.69692 1.4435 5.2295 1.78241L13.9394 7.32507C14.4334 7.63943 14.4334 8.36057 13.9394 8.67493L5.2295 14.2176C4.69692 14.5565 4 14.1739 4 13.5427Z">
+            </path></svg>
+            <svg aria-hidden="true" focusable="false" class="octicon icon-pause" width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="2" width="3" height="12" rx="1"></rect>
+              <rect x="9" y="2" width="3" height="12" rx="1"></rect>
+            </svg>
+          </button>
+          <a data-target="animated-image.openButton" aria-label="打开无声的管理门户快速演示，以显示预期内容的概述。它在新窗口中显示了 SSO、设置 SSO 连接的能力、设置链接、目录同步等功能" class="AnimatedImagePlayer-button" href="https://github.com/boxyhq/jackson/blob/main/samljackson480.gif" target="_blank">
+            <svg aria-hidden="true" class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+              <path fill-rule="evenodd" d="M10.604 1h4.146a.25.25 0 01.25.25v4.146a.25.25 0 01-.427.177L13.03 4.03 9.28 7.78a.75.75 0 01-1.06-1.06l3.75-3.75-1.543-1.543A.25.25 0 0110.604 1zM3.75 2A1.75 1.75 0 002 3.75v8.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0014 12.25v-3.5a.75.75 0 00-1.5 0v3.5a.25.25 0 01-.25.25h-8.5a.25.25 0 01-.25-.25v-8.5a.25.25 0 01.25-.25h3.5a.75.75 0 000-1.5h-3.5z"></path>
+            </svg>
+          </a>
+        </span>
+      </span></animated-image></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">目录同步</font></font></h2><a id="user-content-directory-sync" class="anchor" aria-label="永久链接：目录同步" href="#directory-sync"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SAML Jackson 还支持基于 SCIM 2.0 协议的目录同步。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">目录同步可帮助组织自动配置和取消配置用户。因此，它通过节省组织宝贵的时间、创建用户身份数据的单一真实来源以及帮助他们确保数据安全，简化了用户生命周期管理流程。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如需完整文档，请访问</font></font><a href="https://boxyhq.com/docs/directory-sync/overview" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">boxyhq.com/docs/directory-sync/overview</font></font></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">🌟 为什么要为这个存储库加注星标？</font></font></h2><a id="user-content--why-star-this-repository" class="anchor" aria-label="永久链接：🌟 为什么要加注此存储库？" href="#-why-star-this-repository"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您觉得这个项目有用，请考虑通过为</font></font><a href="https://github.com/boxyhq/jackson"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">存储库</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">加星标并与他人分享来支持我们。这可以帮助其他人找到该项目，发展社区并确保项目的长期健康。🙏</font></font></p>
+<ul dir="auto">
+<li><a href="#saml-jackson-open-source-enterprise-sso-and-directory-sync"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SAML Jackson：开源企业 SSO 和目录同步</font></font></a>
+<ul dir="auto">
+<li><a href="#directory-sync"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">目录同步</font></font></a></li>
+<li><a href="#-why-star-this-repository"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">🌟 为什么要为这个存储库加注星标？</font></font></a></li>
+<li><a href="#-getting-started-with-saml-jackson"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">🚀 开始使用 SAML Jackson</font></font></a>
+<ul dir="auto">
+<li><a href="#try-a-demo"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">试用演示</font></font></a></li>
+<li><a href="#deploying-saml-jackson-as-a-separate-service-locally"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在本地将 SAML Jackson 作为单独服务部署</font></font></a>
+<ul dir="auto">
+<li><a href="#prerequisites"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">先决条件</font></font></a></li>
+<li><a href="#clone-the-repository"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">克隆存储库</font></font></a></li>
+<li><a href="#install-dependencies"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装依赖项</font></font></a></li>
+<li><a href="#setup-environment-variables"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">设置环境变量</font></font></a></li>
+<li><a href="#database"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">数据库</font></font></a></li>
+<li><a href="#start-the-development-server"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">启动开发服务器</font></font></a></li>
+</ul>
+</li>
+<li><a href="#documentation"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文档</font></font></a></li>
+<li><a href="#easy-cloud-deployment"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">轻松云部署</font></font></a></li>
+</ul>
+</li>
+<li><a href="#videos"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">视频</font></font></a></li>
+<li><a href="#end-to-end-e2e-tests"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">端到端 (E2E) 测试</font></font></a></li>
+<li><a href="#about-boxyhq"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">关于BoxyHQ</font></font></a></li>
+<li><a href="#security-and-observability"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安全性和可观察性</font></font></a>
+<ul dir="auto">
+<li><a href="#observability"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可观察性</font></font></a></li>
+<li><a href="#sbom-reports-software-bill-of-materials"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SBOM 报告（软件物料清单）</font></font></a></li>
+<li><a href="#container-signing-and-verification"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">容器签名与验证</font></font></a></li>
+<li><a href="#%EF%B8%8F-reporting-security-issues"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">🛡️ 报告安全问题</font></font></a></li>
+</ul>
+</li>
+<li><a href="#contributing"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献</font></font></a></li>
+<li><a href="#-support"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">💫 支持</font></font></a></li>
+<li><a href="#-license"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">📌 许可证</font></font></a></li>
+</ul>
+</li>
+</ul>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">🚀 开始使用 SAML Jackson</font></font></h2><a id="user-content--getting-started-with-saml-jackson" class="anchor" aria-label="永久链接：🚀 开始使用 SAML Jackson" href="#-getting-started-with-saml-jackson"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">有两种方法可以将 SAML Jackson 集成到应用程序中。您可以根据自己的使用情况选择其中任意一种。</font></font><br></p>
+<ol dir="auto">
+<li><a href="https://boxyhq.com/docs/jackson/deploy/service" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">作为一个单独的服务</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（</font></font><a href="https://nextjs.org/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Next.js</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">应用程序），它包括一个开箱即用的管理门户，用于管理 SSO 和目录同步连接。</font></font></li>
+<li><a href="https://boxyhq.com/docs/jackson/deploy/npm-library" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">NPM 库</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">作为应用程序中的嵌入库。</font></font></li>
+</ol>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">试用演示</font></font></h3><a id="user-content-try-a-demo" class="anchor" aria-label="永久链接：尝试演示" href="#try-a-demo"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">尝试我们的托管演示，</font></font><a href="https://saml-demo.boxyhq.com" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">其中展示了 SAML 服务提供商 (SP) 发起的登录流程</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，该演示使用了我们的</font></font><a href="https://mocksaml.com" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Mock SAML</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> IdP 服务。</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在此尝试身份提供商 (IdP) 发起的</font></font><a href="https://mocksaml.com/saml/login" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">登录流程</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在本地将 SAML Jackson 作为单独服务部署</font></font></h3><a id="user-content-deploying-saml-jackson-as-a-separate-service-locally" class="anchor" aria-label="永久链接：在本地将 SAML Jackson 部署为单独的服务" href="#deploying-saml-jackson-as-a-separate-service-locally"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">让我们立即带您了解 Hello SAML Jackson。</font></font></p>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">先决条件</font></font></h4><a id="user-content-prerequisites" class="anchor" aria-label="永久链接：先决条件" href="#prerequisites"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><a href="https://nodejs.org/en" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Node.js</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">版本</font></font><code>18.14.2</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或更高版本</font></font></li>
+</ul>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"></font><a href="https://github.com/nvm-sh/nvm"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通常，使用 Windows 上的nvm</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或</font></font><a href="https://github.com/jasongin/nvs"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">nvs</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">等版本管理器来安装和维护 Node.js 版本是一个好主意</font><font style="vertical-align: inherit;">。更多</font></font><a href="https://schalkneethling.com/posts/installing-node-and-managing-versions" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">信息请参见此处</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+</blockquote>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">克隆存储库</font></font></h4><a id="user-content-clone-the-repository" class="anchor" aria-label="永久链接：克隆存储库" href="#clone-the-repository"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>git clone https://github.com/boxyhq/jackson.git
+<span class="pl-c1">cd</span> jackson</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="git clone https://github.com/boxyhq/jackson.git
+cd jackson" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装依赖项</font></font></h4><a id="user-content-install-dependencies" class="anchor" aria-label="永久链接：安装依赖项" href="#install-dependencies"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>npm i</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="npm i" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">设置环境变量</font></font></h4><a id="user-content-setup-environment-variables" class="anchor" aria-label="永久链接：设置环境变量" href="#setup-environment-variables"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">从项目根目录中的</font></font><code>.env</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">现有文件</font><font style="vertical-align: inherit;">创建。</font></font><code>.env.example</code><font style="vertical-align: inherit;"></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>cp .env.example .env</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="cp .env.example .env" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<blockquote>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">环境变量文档：</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">查看</font></font><a href="https://boxyhq.com/docs/jackson/deploy/env-variables" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://boxyhq.com/docs/jackson/deploy/env-variables</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，了解所有可用的环境变量。</font></font></p>
+</blockquote>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">数据库</font></font></h4><a id="user-content-database" class="anchor" aria-label="永久链接：数据库" href="#database"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">对于其余设置，我们将使用 PostgreSQL 数据库。在 macOS 上启动并运行 PostgreSQL 的最简单方法是使用 Postgres.app。您可以从</font></font><a href="https://postgresapp.com/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://postgresapp.com/</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">下载它。</font></font></p>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">对于其他操作系统和 MacOS 的替代选项，请参阅</font></font><a href="https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Prisma 网站上提供的文档</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+</blockquote>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">启动开发服务器</font></font></h4><a id="user-content-start-the-development-server" class="anchor" aria-label="永久链接：启动开发服务器" href="#start-the-development-server"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">现在我们的数据库已经运行，我们可以启动开发服务器了。但在这之前，我们需要一种方法来登录管理门户。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">要登录管理门户，我们需要</font></font><a href="https://boxyhq.com/docs/admin-portal/overview#1-magic-links" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">配置魔术链接</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，或</font></font><a href="https://boxyhq.com/docs/admin-portal/overview#2-email-and-password" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">启用用户名和密码</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">登录。最简单的方法，也是我们将使用的方法，是启用用户名和密码登录。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">找到</font></font><code>.env</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">环境</font></font><code>NEXTAUTH_ADMIN_CREDENTIALS</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">变量。我们需要提供一个</font></font><code>email:password</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">组合，然后可以使用该组合登录管理门户。例如：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>NEXTAUTH_ADMIN_CREDENTIALS=admin@example.com:password</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="NEXTAUTH_ADMIN_CREDENTIALS=admin@example.com:password" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">现在我们可以启动开发服务器：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>npm run dev</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="npm run dev" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在您的浏览器中打开</font></font><code>http://localhost:5225</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，您将被重定向到登录屏幕。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在登录屏幕上，您现在可以使用在</font></font><code>NEXTAUTH_ADMIN_CREDENTIALS</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">环境变量中设置的用户名和密码登录。单击“登录”，您应该已登录并看到没有配置连接的 SSO 连接页面。我们已经到达 Hello SAML Jackson！</font></font></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文档</font></font></h3><a id="user-content-documentation" class="anchor" aria-label="永久链接：文档" href="#documentation"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">有关完整文档，请访问</font></font><a href="https://boxyhq.com/docs/jackson/overview" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">boxyhq.com/docs/jackson/overview</font></font></a></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">轻松云部署</font></font></h3><a id="user-content-easy-cloud-deployment" class="anchor" aria-label="永久链接：轻松云部署" href="#easy-cloud-deployment"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用以下提供程序，只需单击即可将 SAML Jackson 部署到云中：</font></font></p>
+<p dir="auto"><a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fboxyhq%2Fjackson&amp;env=DB_ENGINE,DB_TYPE,DB_URL,DB_ENCRYPTION_KEY,DB_TTL,DB_CLEANUP_LIMIT,JACKSON_API_KEYS,EXTERNAL_URL,IDP_ENABLED,SAML_AUDIENCE,CLIENT_SECRET_VERIFIER,SMTP_HOST,SMTP_PORT,SMTP_USER,SMTP_PASSWORD,SMTP_FROM,NEXTAUTH_URL,NEXTAUTH_SECRET,NEXTAUTH_ACL&amp;envDescription=DB%20configuration%20and%20keys%20for%20encryption%20and%20authentication.EXTERNAL_URL%20(Usually%20https%3A%2F%2F%3Cproject-name-from-above%3E.vercel.app)%20can%20be%20set%20after%20deployment%20from%20the%20project%20dashboard.Set%20to%20''%20if%20not%20applicable.&amp;envLink=https://boxyhq.com/docs/jackson/deploy/env-variables" rel="nofollow"><img src="https://camo.githubusercontent.com/0d115430c1db17132964386282927e5e313543c7d868fc06bc9a7c65d7ec974e/68747470733a2f2f76657263656c2e636f6d2f627574746f6e" alt="使用 Vercel 进行部署" data-canonical-src="https://vercel.com/button" style="max-width: 100%;"></a>
+<a href="https://heroku.com/deploy" rel="nofollow"><img src="https://camo.githubusercontent.com/df5706ea91f4c49deb42ca31a753d025e2078d24e2490cf88ffc7ed84a38e48e/68747470733a2f2f7777772e6865726f6b7563646e2e636f6d2f6465706c6f792f627574746f6e2e737667" alt="部署" data-canonical-src="https://www.herokucdn.com/deploy/button.svg" style="max-width: 100%;"></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">视频</font></font></h2><a id="user-content-videos" class="anchor" aria-label="固定链接：视频" href="#videos"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SSO/OIDC 教程</font></font><a href="https://www.youtube.com/watch?v=nvsD4-GQw4A" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SAML Jackson Enterprise SSO</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">（分为几章，以便轻松找到您要查找的内容）</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SAML 单点登录</font></font><a href="https://www.youtube.com/watch?v=VBUznQwoEWU" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">演示</font></font></a></li>
+</ul>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">端到端 (E2E) 测试</font></font></h2><a id="user-content-end-to-end-e2e-tests" class="anchor" aria-label="永久链接：端到端 (E2E) 测试" href="#end-to-end-e2e-tests"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">创建</font></font><code>.env.test.local</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文件并填充值。要执行测试，请运行：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>npm run test:e2e</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="npm run test:e2e" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">关于BoxyHQ</font></font></h2><a id="user-content-about-boxyhq" class="anchor" aria-label="永久链接：关于 BoxyHQ" href="#about-boxyhq"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<a href="https://boxyhq.com/enterprise-sso" rel="nofollow">
+<themed-picture data-catalyst-inline="true" data-catalyst=""><picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/boxyhq/.github/assets/66887028/df1c9904-df2f-4515-b403-58b14a0e9093">
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/boxyhq/.github/assets/66887028/e093a466-72ea-41c6-a292-4c39a150facd">
-  <img alt="BoxyHQ - Security building blocks for developers" src="https://github.com/boxyhq/jackson/assets/66887028/b40520b7-dbce-400b-88d3-400d1c215ea1" height="auto" width="400" />
-</picture>
+  <img alt="BoxyHQ - 为开发人员构建安全模块" src="https://github.com/boxyhq/jackson/assets/66887028/b40520b7-dbce-400b-88d3-400d1c215ea1" height="auto" width="400" style="visibility:visible;max-width:100%;">
+</picture></themed-picture>
 </a>
-
-BoxyHQ is on a mission to democratize enterprise readiness for developers one building block at a time. We are building a suite of security building blocks that are easy to use and integrate into your applications. Our goal is to make being enterprise-ready accessible to all developers, founders, and those responsible for the security of their internal applications regardless of their security expertise.
-
-<a href="https://twitter.com/BoxyHQ"><img src="https://img.shields.io/twitter/follow/boxyhq?style=social" alt="Follow us on Twitter/X"></a>
-<a href="https://www.linkedin.com/company/boxyhq"><img src="https://img.shields.io/badge/LinkedIn-blue" alt="Connect with us on LinkedIn"></a>
-
-Community is core to our mission. We are building a community of developers, security enthusiasts, and founders who are passionate about security and building secure applications. We are building in the open and would love for you to join us on this journey.
-
-Join the community on Discord today.
-
-<a href="https://discord.gg/uyb7pYt4Pa"><img src="https://img.shields.io/discord/877585485235630130" alt="Join the community on Discord"></a>
-
-## Security And Observability
-
-### Observability
-
-We support first-class observability on the back of OpenTelemetry, refer [here](https://boxyhq.com/docs/jackson/observability) for more details.
-
-### SBOM Reports (Software Bill Of Materials)
-
-We support SBOM reports, refer [here](https://boxyhq.com/docs/jackson/sbom) for more details.
-
-### Container Signing and Verification
-
-We support container image verification using cosign, refer [here](https://boxyhq.com/docs/jackson/container-signing) for more details.
-
-### 🛡️ Reporting Security Issues
-
-[Responsible Disclosure](SECURITY.md)
-
-## Contributing
-
-Thank you for your interest in contributing to SAML Jackson! We are excited to welcome contributions from the community. Please refer to our [contributing guidelines](CONTRIBUTING.md) for more information.
-
-## 💫 Support
-
-Reach out to the maintainers at one of the following places:
-
-- [GitHub Discussions](https://github.com/boxyhq/jackson/discussions)
-- [GitHub Issues](https://github.com/boxyhq/jackson/issues)
-- [Discord](https://discord.gg/uyb7pYt4Pa)
-
-## 📌 License
-
-[Apache 2.0 License](https://github.com/boxyhq/jackson/blob/main/LICENSE)
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">BoxyHQ 的使命是逐步让开发人员实现企业就绪。我们正在构建一套易于使用且可集成到您的应用程序中的安全构建块。我们的目标是让所有开发人员、创始人以及负责其内部应用程序安全的人员都能实现企业就绪，无论他们是否具备安全专业知识。</font></font></p>
+<p dir="auto"><a href="https://twitter.com/BoxyHQ" rel="nofollow"><img src="https://camo.githubusercontent.com/7d834ed88fa5c3153b535b7b87f97cc084585b43533eef001f21b9595ef42451/68747470733a2f2f696d672e736869656c64732e696f2f747769747465722f666f6c6c6f772f626f787968713f7374796c653d736f6369616c" alt="在 Twitter/X 上关注我们" data-canonical-src="https://img.shields.io/twitter/follow/boxyhq?style=social" style="max-width: 100%;"></a>
+<a href="https://www.linkedin.com/company/boxyhq" rel="nofollow"><img src="https://camo.githubusercontent.com/0d6903d5ac775fe655471e3f47a897dd4bd9341a5a3fa1cfe96384fdd8ceff4d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c696e6b6564496e2d626c7565" alt="通过 LinkedIn 与我们联系" data-canonical-src="https://img.shields.io/badge/LinkedIn-blue" style="max-width: 100%;"></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">社区是我们使命的核心。我们正在建立一个由开发人员、安全爱好者和创始人组成的社区，他们对安全和构建安全应用程序充满热情。我们正在开放地构建，并希望您能加入我们的旅程。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">立即加入 Discord 社区。</font></font></p>
+<p dir="auto"><a href="https://discord.gg/uyb7pYt4Pa" rel="nofollow"><img src="https://camo.githubusercontent.com/ab9ff4957caaa761cff762715deb0ac30fd1af14467b1957a9d316bf779ed2a3/68747470733a2f2f696d672e736869656c64732e696f2f646973636f72642f383737353835343835323335363330313330" alt="加入 Discord 社区" data-canonical-src="https://img.shields.io/discord/877585485235630130" style="max-width: 100%;"></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安全性和可观察性</font></font></h2><a id="user-content-security-and-observability" class="anchor" aria-label="永久链接：安全性和可观察性" href="#security-and-observability"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">可观察性</font></font></h3><a id="user-content-observability" class="anchor" aria-label="永久链接：可观察性" href="#observability"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们在 OpenTelemetry 的基础上支持一流的可观察性，请参阅</font></font><a href="https://boxyhq.com/docs/jackson/observability" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">此处</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">了解更多详细信息。</font></font></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">SBOM 报告（软件物料清单）</font></font></h3><a id="user-content-sbom-reports-software-bill-of-materials" class="anchor" aria-label="永久链接：SBOM 报告（软件物料清单）" href="#sbom-reports-software-bill-of-materials"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们支持 SBOM 报告，请参阅</font></font><a href="https://boxyhq.com/docs/jackson/sbom" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">此处</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">了解更多详细信息。</font></font></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">容器签名与验证</font></font></h3><a id="user-content-container-signing-and-verification" class="anchor" aria-label="永久链接：容器签名和验证" href="#container-signing-and-verification"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们支持使用 cosign 进行容器镜像验证，请参阅</font></font><a href="https://boxyhq.com/docs/jackson/container-signing" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">此处</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">了解更多详细信息。</font></font></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">🛡️ 报告安全问题</font></font></h3><a id="user-content-️-reporting-security-issues" class="anchor" aria-label="永久链接：🛡️ 报告安全问题" href="#️-reporting-security-issues"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a href="/boxyhq/jackson/blob/main/SECURITY.md"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">负责任的披露</font></font></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献</font></font></h2><a id="user-content-contributing" class="anchor" aria-label="永久链接：贡献" href="#contributing"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">感谢您有兴趣为 SAML Jackson 做出贡献！我们很高兴欢迎社区做出贡献。请参阅我们的</font></font><a href="/boxyhq/jackson/blob/main/CONTRIBUTING.md"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献指南</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">了解更多信息。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">💫 支持</font></font></h2><a id="user-content--support" class="anchor" aria-label="固定链接：💫 支持" href="#-support"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过以下任一方式联系维护人员：</font></font></p>
+<ul dir="auto">
+<li><a href="https://github.com/boxyhq/jackson/discussions"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">GitHub 讨论</font></font></a></li>
+<li><a href="https://github.com/boxyhq/jackson/issues"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">GitHub 问题</font></font></a></li>
+<li><a href="https://discord.gg/uyb7pYt4Pa" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">不和谐</font></font></a></li>
+</ul>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">📌 许可证</font></font></h2><a id="user-content--license" class="anchor" aria-label="永久链接：📌 许可证" href="#-license"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a href="https://github.com/boxyhq/jackson/blob/main/LICENSE"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Apache 2.0 许可证</font></font></a></p>
+</article></div>
